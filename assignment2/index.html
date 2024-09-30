@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AI Model Marketplace</title>
+</head>
+
+<style>
+    summary {
+        font-size: 1.5em;
+        cursor: pointer;
+        outline: none;
+        user-select: none;
+    }
+</style>
+
+<body>
+<!-- Display information about user: pending withdrawal, models created, owned models. -->
+<h1>Welcome to the AI Model Marketplace!</h1>
+<details open>
+    <summary>List model</summary>
+    <form id="list-model-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description" required>
+        <label for="price">Price:</label>
+        <input type="number" step="0.0001" min="0" id="price" name="price" required>
+        <button type="submit">List Model</button>
+    </form>
+</details>
+
+<details open>
+    <summary>User Information:</summary>
+    <p id="user-info"></p>
+</details>
+
+<details>
+    <summary>Models Created by User:</summary>
+    <ul id="created-models"></ul>
+</details>
+
+<details>
+    <summary>Models Owned by User:</summary>
+    <ul id="owned-models"></ul>
+</details>
+
+<details>
+    <summary>Models on the Marketplace:</summary>
+    <ul id="models"></ul>
+</details>
+
+<script src="script.js" type="module"></script>
+</body>
+</html>
