@@ -99,10 +99,11 @@ function displayCreatedModels(models) {
     });
 }
 
-function displayOwnedModels(models) {
-    ownedModelsElement.innerHTML = "";
-    models.forEach((model, id) => {
-        if (model.creator.toLowerCase() !== account) return;
+async function displayOwnedModelsAsync(models) {
+    for (let i = 0; i < models.length; i++) {
+        let model = models[i];
+        let id = i;
+        if (!await AIModelMarketplace.methods.userModels(account, i).call()) continue;
 
         ownedModelsElement.innerHTML += `
             <li class="model">
@@ -122,14 +123,19 @@ function displayOwnedModels(models) {
                 <button onclick="rateModel(${id})">Rate</button>
             </li>
         `;
-    });
+
+    }
+}
+
+function displayOwnedModels(models) {
+    ownedModelsElement.innerHTML = "";
+    displayOwnedModelsAsync(models).then();
 }
 
 window.purchaseModel = async id => {
     const model = models[id];
     await AIModelMarketplace.methods.purchaseModel(id).send({ from: account, value: model.price });
     alert("Model bought successfully.");
-    await refreshModelList().then();
 };
 
 window.rateModel = async id => {
@@ -140,13 +146,11 @@ window.rateModel = async id => {
     }
     await AIModelMarketplace.methods.rateModel(id, rating).send({ from: account });
     alert("Model rated successfully.");
-    await refreshModelList().then();
 };
 
 window.withdrawFunds = async () => {
     await AIModelMarketplace.methods.withdrawFunds().send({ from: account });
     alert("Withdrawal successful.");
-    await refreshModelList().then();
 };
 
 async function refreshModelList() {
@@ -169,7 +173,6 @@ function setupModelListingForm() {
 
         AIModelMarketplace.methods.listModel(name, description, price).send({ from: account }).on("receipt", _ => {
             alert("Model listed successfully.");
-            refreshModelList().then();
         }).on("error", error => {
             console.error(error);
             alert("Error listing model.");

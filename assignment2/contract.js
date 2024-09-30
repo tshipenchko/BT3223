@@ -1,4 +1,4 @@
-export const address = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+export const address = "0xa192468Ec6626F82a7622acD587841ad285456a2";
 
 // This variable is necessary for local development
 export const getHardhatAddress = () => {
